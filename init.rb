@@ -19,7 +19,8 @@ class Heroku::Command::War < Heroku::Command::BaseWithApp
     end
       display("Pushing #{war} to #{app}")
       response = RestClient.post 'http://warpath.herokuapp.com/push', :appName => app, :apiKey => Heroku::Auth.api_key, :war => File.new(war, 'rb')
-      if response.code == 200
+    
+      if response.cookies['PLAY_FLASH'] == nil
           display "Successfully pushed #{war} to #{app}"
       else
           display "Failed to push #{war} to #{app}"
