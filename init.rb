@@ -3,7 +3,7 @@ require 'rest_client'
 require 'net/http'
 
 
-class Heroku::Command::War < Heroku::Command::BaseWithApp
+class Heroku::Command::Direct < Heroku::Command::BaseWithApp
     # push
     #
     # push a slug for an app
@@ -11,7 +11,7 @@ class Heroku::Command::War < Heroku::Command::BaseWithApp
     #  -w, --war WARFILE         # war to push
     #  -h, --host HOST           # defaults to direct-to.herokuapp.com
     #
-  def push
+  def war 
     war = extract_option("--war")
     host = extract_option("--host")
     if host == nil
@@ -34,7 +34,7 @@ class Heroku::Command::War < Heroku::Command::BaseWithApp
         monitorResponse = RestClient.get("http://#{host}#{monitor}")
         monitorHash = json_decode(monitorResponse)
         status = monitorHash['status']
-        display(status)
+        display(monitorHash['message'])
         if status != "success" && status != "failed"
           sleep 5
         end
