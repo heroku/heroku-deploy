@@ -9,13 +9,13 @@ class Heroku::Command::War < Heroku::Command::BaseWithApp
     # push a slug for an app
     #
     #  -w, --war WARFILE         # war to push
-    #  -h, --host HOST           # defaults to warpath.herokuapp.com
+    #  -h, --host HOST           # defaults to direct-to.herokuapp.com
     #
   def push
     war = extract_option("--war")
     host = extract_option("--host")
     if host == nil
-        host = "warpath.herokuapp.com"
+        host = "direct-to.herokuapp.com"
     end
     if war == nil 
         raise Heroku::Command::CommandFailed, "No .war specified.\nSpecify which war to use with --war <war file name>"
