@@ -50,7 +50,7 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
 
     display("Pushing #{war} to #{app}")
     begin
-      response =  RestClient.post "http://:#{api_key}@#{host}/direct/#{app}/war", :war => File.new(war, 'rb')
+      response =  RestClient.post "https://:#{api_key}@#{host}/direct/#{app}/war", :war => File.new(war, 'rb')
       display(json_decode(response)['status'])
       monitor = response.headers[:location]
       monitorHash = nil
