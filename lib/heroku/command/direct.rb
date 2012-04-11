@@ -9,7 +9,7 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
 
   # direct
   #
-  # deploy to an apps
+  # deploy to an app
   #
   def index
     display "Usage: heroku direct:war"
@@ -41,6 +41,8 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
     if !File.exists? war
       raise Heroku::Command::CommandFailed, "War file not found"
     end
+
+
 
     display("Pushing #{war} to #{app}")
     begin

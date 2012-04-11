@@ -15,26 +15,33 @@ describe Heroku::Command::Direct do
     @war_file.unlink
   end
 
+  context "when command are initialized" do
+    #noinspection RubyArgCount
+    let (:options) { Heroku::Command.commands['direct:war'][:options] }
+
+    it { options.has_key?("war").should be_true }
+    it { options.has_key?("host").should be_true }
+  end
+
   context "when a war file and app is specified" do
     #noinspection RubyArgCount
     let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => @war_file.path }
 
-    it "the war should be deployed" do
-      result = direct.war
-      result.should eql "success"
-    end
-  end
-
-  context "when heroku credentials are invalid" do
-    #noinspection RubyArgCount
-    let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => @war_file.path }
-
-    before do
-      direct.stub(:api_key).and_return "something_invalid"
+    context "and everything is peachy" do
+      it "the war should be deployed" do
+        result = direct.war
+        result.should eql "success"
+      end
     end
 
-    it "an error should be raised" do
-      lambda { direct.war }.should raise_error(RuntimeError, /Unable to get user info/)
+    context "when heroku credentials are invalid" do
+      before do
+        direct.stub(:api_key).and_return "something_invalid"
+      end
+
+      it "an error should be raised" do
+        lambda { direct.war }.should raise_error(RuntimeError, /Unable to get user info/)
+      end
     end
   end
 
