@@ -17,13 +17,14 @@ describe Heroku::Command::Direct do
 
   context "when command are initialized" do
     #noinspection RubyArgCount
+    #noinspection RubyWrongHash
     let (:options) { Heroku::Command.commands['direct:war'][:options] }
 
     it { options.has_key?("war").should be_true }
     it { options.has_key?("host").should be_true }
   end
 
-  context "when a war file and app is specified" do
+  context "when a war file and valid app is specified" do
     #noinspection RubyArgCount
     let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => @war_file.path }
 
@@ -44,6 +45,15 @@ describe Heroku::Command::Direct do
       end
     end
   end
+
+  context "when a war file and app without access is specified" do
+    #noinspection RubyArgCount
+    let(:direct) { Heroku::Command::Direct.new [], :app => "an-app-i-do-not-own", :war => @war_file.path }
+
+      it "an error should be raised" do
+        lambda { direct.war }.should raise_error(Heroku::Command::CommandFailed, "No access to this app")
+      end
+    end
 
   context "when no war file is specified" do
     #noinspection RubyArgCount

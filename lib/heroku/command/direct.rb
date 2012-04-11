@@ -42,7 +42,11 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
       raise Heroku::Command::CommandFailed, "War file not found"
     end
 
-
+    begin
+      heroku.info app
+    rescue
+      raise Heroku::Command::CommandFailed, "No access to this app"
+    end
 
     display("Pushing #{war} to #{app}")
     begin
