@@ -52,7 +52,7 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
     end
 
     begin
-      heroku.info app
+      heroku.get("/apps/#{app}")
     rescue
       raise Heroku::Command::CommandFailed, "No access to this app"
     end
