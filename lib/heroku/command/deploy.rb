@@ -16,18 +16,26 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
   def war
     war = extract_option("--war")
     host = extract_option("--host")
+
     if host == nil
       host = "direct-to.herokuapp.com"
     end
+
     if war == nil
       raise Heroku::Command::CommandFailed, "No .war specified.\nSpecify which war to use with --war <war file name>"
     end
+
     if !war.end_with?(".war")
       raise Heroku::Command::CommandFailed, "War file must have a .war extension"
     end
+
+    if !File.exists? war
+      raise Heroku::Command::CommandFailed, "War file not found"
+    end
+
     display("Pushing #{war} to #{app}")
     begin
-      response =  RestClient.post "http://:#{Heroku::Auth.api_key}@#{host}/direct/#{app}/war", :war => File.new(war, 'rb')
+      response =  RestClient.post "http://:#{api_key}@#{host}/direct/#{app}/war", :war => File.new(war, 'rb')
       display(json_decode(response)['status'])
       monitor = response.headers[:location]
       monitorHash = nil
@@ -45,13 +53,18 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
       if status == "success"
         display(monitorHash['message'] + " " + monitorHash['release'])
       else
-        display(monitorHash['message'])
+        raise(monitorHash['message'])
       end
     rescue Exception => e
-      display("E" + e)
+      display("Error: " + e.message)
+      raise e
     end
+    status
+  end
 
-
+  protected
+  def api_key
+    Heroku::Auth.api_key
   end
 end
 
