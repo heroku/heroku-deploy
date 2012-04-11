@@ -6,13 +6,13 @@ describe Heroku::Command::Direct do
     @app_name = ENV['HEROKU_TEST_APP_NAME']
     @real_war = File.new("../../resources/sample-war.war")
 
-    @huge_war = Tempfile.new(["huge", ".war"])
-    @huge_war.close
-    `dd if=/dev/zero of=#{@huge_war.path} count=99 bs=1048576`
+    @huge_war = create_fake_war(100)
+    @too_huge_war = create_fake_war(101)
   end
 
   after(:all) do
     @huge_war.unlink
+    @too_huge_war.unlink
   end
 
   context "when command options are are initialized" do
@@ -48,12 +48,21 @@ describe Heroku::Command::Direct do
     end
   end
 
-  context "when a war file is HUGE! and valid app is specified" do
+  context "when a war file is huge" do
     #noinspection RubyArgCount
     let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => @huge_war.path }
 
     it "the war should be deployed" do
       direct.war.should eql "success"
+    end
+  end
+
+  context "when a war file is too huge" do
+    #noinspection RubyArgCount
+    let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => @too_huge_war.path }
+
+    it "an error should be raised" do
+      lambda { direct.war }.should raise_error(Heroku::Command::CommandFailed, "War file must not exceed 100 MB")
     end
   end
 
@@ -91,5 +100,12 @@ describe Heroku::Command::Direct do
     it "an error should be raised" do
       lambda { direct.war }.should raise_error(Heroku::Command::CommandFailed, "War file not found")
     end
+  end
+
+  def create_fake_war(mb)
+    file = Tempfile.new(["fake", ".war"])
+    file.close
+    `dd if=/dev/zero of=#{file.path} count=#{mb} bs=1048576`
+    file
   end
 end
