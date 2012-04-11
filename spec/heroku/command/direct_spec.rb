@@ -13,7 +13,6 @@ describe Heroku::Command::Direct do
     let (:options) { Heroku::Command.commands['direct:war'][:options] }
 
     it { options.has_key?("war").should be_true }
-    it { options.has_key?("host").should be_true }
   end
 
   context "when a war file and valid app is specified" do

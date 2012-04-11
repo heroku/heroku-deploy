@@ -28,15 +28,10 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
   # deploy a war file to an app
   #
   # -w, --war WARFILE         # war to push
-  # -h, --host HOST           # defaults to direct-to.herokuapp.com
   #
   def war
     war = extract_option("--war")
-    host = extract_option("--host")
-
-    if host == nil
-      host = DEFAULT_HOST
-    end
+    host = DEFAULT_HOST
 
     if war == nil
       raise Heroku::Command::CommandFailed, "No .war specified.\nSpecify which war to use with --war <war file name>"
