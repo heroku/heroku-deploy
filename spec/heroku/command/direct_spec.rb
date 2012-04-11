@@ -4,7 +4,15 @@ describe Heroku::Command::Direct do
 
   before(:all) do
     @app_name = ENV['HEROKU_TEST_APP_NAME']
-    @war_file = File.new("../../resources/sample-war.war")
+    @real_war = File.new("../../resources/sample-war.war")
+
+    @huge_war = Tempfile.new(["huge", ".war"])
+    @huge_war.close
+    `dd if=/dev/zero of=#{@huge_war.path} count=99 bs=1048576`
+  end
+
+  after(:all) do
+    @huge_war.unlink
   end
 
   context "when command options are are initialized" do
@@ -17,12 +25,11 @@ describe Heroku::Command::Direct do
 
   context "when a war file and valid app is specified" do
     #noinspection RubyArgCount
-    let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => @war_file.path }
+    let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => @real_war.path }
 
     context "and everything is peachy" do
       it "the war should be deployed" do
-        result = direct.war
-        result.should eql "success"
+        direct.war.should eql "success"
       end
 
       it "the result should be visible in browser" do
@@ -41,9 +48,18 @@ describe Heroku::Command::Direct do
     end
   end
 
+  context "when a war file is HUGE! and valid app is specified" do
+    #noinspection RubyArgCount
+    let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => @huge_war.path }
+
+    it "the war should be deployed" do
+      direct.war.should eql "success"
+    end
+  end
+
   context "when a war file and app without access is specified" do
     #noinspection RubyArgCount
-    let(:direct) { Heroku::Command::Direct.new [], :app => "an-app-i-do-not-own", :war => @war_file.path }
+    let(:direct) { Heroku::Command::Direct.new [], :app => "an-app-i-do-not-own", :war => @real_war.path }
 
       it "an error should be raised" do
         lambda { direct.war }.should raise_error(Heroku::Command::CommandFailed, "No access to this app")
