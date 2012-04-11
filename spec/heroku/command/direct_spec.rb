@@ -4,18 +4,10 @@ describe Heroku::Command::Direct do
 
   before(:all) do
     @app_name = ENV['HEROKU_TEST_APP_NAME']
+    @war_file = File.new("../../resources/sample-war.war")
   end
 
-  before(:each) do
-    @war_file = Tempfile.new(["test", ".war"])
-    @war_file.close
-  end
-
-  after(:each) do
-    @war_file.unlink
-  end
-
-  context "when command are initialized" do
+  context "when command options are are initialized" do
     #noinspection RubyArgCount
     #noinspection RubyWrongHash
     let (:options) { Heroku::Command.commands['direct:war'][:options] }
@@ -32,6 +24,10 @@ describe Heroku::Command::Direct do
       it "the war should be deployed" do
         result = direct.war
         result.should eql "success"
+      end
+
+      it "the result should be visiable in browser" do
+        (RestClient.get("http://#{@app_name}.herokuapp.com").include? "Hello World").should be_true
       end
     end
 
