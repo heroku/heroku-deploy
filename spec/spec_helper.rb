@@ -1,4 +1,4 @@
 require "heroku/cli"
-require "heroku/command/deploy"
+require "heroku/command/direct"
 require "rspec"
 require "tempfile"

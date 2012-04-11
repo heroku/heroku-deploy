@@ -1,1 +1,1 @@
-require "heroku/command/deploy"
+require "heroku/command/direct"

@@ -3,7 +3,7 @@ require 'rest_client'
 require 'net/http'
 
 
-class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
+class Heroku::Command::Direct < Heroku::Command::BaseWithApp
   VERSION = "0.1"
 
   # push
