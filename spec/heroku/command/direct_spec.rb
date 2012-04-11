@@ -26,7 +26,7 @@ describe Heroku::Command::Direct do
         result.should eql "success"
       end
 
-      it "the result should be visiable in browser" do
+      it "the result should be visible in browser" do
         (RestClient.get("http://#{@app_name}.herokuapp.com").include? "Hello World").should be_true
       end
     end
