@@ -37,7 +37,7 @@ describe Heroku::Command::Direct do
       end
 
       it "an error should be raised" do
-        lambda { direct.war }.should raise_error(RuntimeError, /Unable to get user info/)
+        lambda { direct.war }.should raise_error(Heroku::Command::CommandFailed, /Unable to get user info/)
       end
     end
   end

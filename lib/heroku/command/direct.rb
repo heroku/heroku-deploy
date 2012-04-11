@@ -6,6 +6,14 @@ require 'net/http'
 #
 class Heroku::Command::Direct < Heroku::Command::BaseWithApp
   VERSION = "0.1"
+  DEFAULT_HOST = "direct-to.herokuapp.com"
+  HTTP_STATUS_ACCEPTED = 202
+  STATUS_IN_PROGRESS = "inprocess"
+  STATUS_SUCCESS = "success"
+  STATUS_FAILED = "failed"
+  RESPONSE_KEY_STATUS = 'status'
+  RESPONSE_KEY_MESSAGE = 'message'
+  RESPONSE_KEY_RELEASE = 'release'
 
   # direct
   #
@@ -27,7 +35,7 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
     host = extract_option("--host")
 
     if host == nil
-      host = "direct-to.herokuapp.com"
+      host = DEFAULT_HOST
     end
 
     if war == nil
@@ -48,31 +56,34 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
       raise Heroku::Command::CommandFailed, "No access to this app"
     end
 
-    display("Pushing #{war} to #{app}")
+    display("Deploying #{war} to #{app}...")
     begin
       response =  RestClient.post "https://:#{api_key}@#{host}/direct/#{app}/war", :war => File.new(war, 'rb')
-      display(json_decode(response)['status'])
-      monitor = response.headers[:location]
+
+      if response.code == HTTP_STATUS_ACCEPTED
+        polling_endpoint = response.headers[:location]
+      else
+        raise RuntimeError, "Deploy not accepted"
+      end
+
+      status = json_decode(response)[RESPONSE_KEY_STATUS]
       monitorHash = nil
-      status = "inprocess"
-      while status != "success" && status != "failed"
-        monitorResponse = RestClient.get("http://#{host}#{monitor}")
+      while status == STATUS_IN_PROGRESS
+        monitorResponse = RestClient.get("https://#{host}#{polling_endpoint}")
         monitorHash = json_decode(monitorResponse)
-        status = monitorHash['status']
-        display(monitorHash['message'])
-        if status != "success" && status != "failed"
+        status = monitorHash[RESPONSE_KEY_STATUS]
+        if status != STATUS_SUCCESS && status != STATUS_FAILED
           sleep 5
         end
       end
 
-      if status == "success"
-        display(monitorHash['message'] + " " + monitorHash['release'])
+      if status == STATUS_SUCCESS
+        display(monitorHash[RESPONSE_KEY_MESSAGE] + " " + monitorHash[RESPONSE_KEY_RELEASE])
       else
-        raise(monitorHash['message'])
+        raise(monitorHash[RESPONSE_KEY_MESSAGE])
       end
     rescue Exception => e
-      display("Error: " + e.message)
-      raise e
+      raise Heroku::Command::CommandFailed, e.message
     end
     status
   end
@@ -82,5 +93,3 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
     Heroku::Auth.api_key
   end
 end
-
-
