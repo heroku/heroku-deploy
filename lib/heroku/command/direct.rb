@@ -6,12 +6,12 @@ require 'net/http'
 class Heroku::Command::Direct < Heroku::Command::BaseWithApp
   VERSION = "0.1"
 
-  # push
+  # war
   #
-  # push a slug for an app
+  # deploy a war file to an app
   #
-  #  -w, --war WARFILE         # war to push
-  #  -h, --host HOST           # defaults to direct-to.herokuapp.com
+  # -w, --war WARFILE         # war to push
+  # -h, --host HOST           # defaults to direct-to.herokuapp.com
   #
   def war
     war = extract_option("--war")
