@@ -2,11 +2,20 @@ require 'heroku/command/base'
 require 'rest_client'
 require 'net/http'
 
-
+# deploy to an app
+#
 class Heroku::Command::Direct < Heroku::Command::BaseWithApp
   VERSION = "0.1"
 
-  # war
+  # direct
+  #
+  # deploy to an apps
+  #
+  def index
+    display "Usage: heroku direct:war"
+  end
+
+  # direct:war
   #
   # deploy a war file to an app
   #
