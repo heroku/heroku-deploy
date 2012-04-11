@@ -59,7 +59,7 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
 
     display("Deploying #{war} to #{app}...")
     begin
-      response =  RestClient.post "https://:#{api_key}@#{host}/direct/#{app}/war", :war => File.new(war, 'rb')
+      response =  RestClient.post "https://:#{api_key}@#{host}/direct/#{app}/war", {:war => File.new(war, 'rb')}, headers
 
       if response.code == HTTP_STATUS_ACCEPTED
         polling_endpoint = response.headers[:location]
@@ -70,7 +70,7 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
       status = json_decode(response)[RESPONSE_KEY_STATUS]
       monitorHash = nil
       while status == STATUS_IN_PROGRESS
-        monitorResponse = RestClient.get("https://#{host}#{polling_endpoint}")
+        monitorResponse = RestClient.get "https://#{host}#{polling_endpoint}", headers
         monitorHash = json_decode(monitorResponse)
         status = monitorHash[RESPONSE_KEY_STATUS]
         if status != STATUS_SUCCESS && status != STATUS_FAILED
@@ -92,5 +92,13 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
   protected
   def api_key
     Heroku::Auth.api_key
+  end
+
+  def headers
+    {
+        'User-Agent'       => "heroku-cli/#{VERSION}",
+        'X-Ruby-Version'   => RUBY_VERSION,
+        'X-Ruby-Platform'  => RUBY_PLATFORM
+    }
   end
 end
