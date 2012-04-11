@@ -4,7 +4,7 @@ describe Heroku::Command::Direct do
 
   before(:all) do
     @app_name = ENV['HEROKU_TEST_APP_NAME']
-    @real_war = File.new("../../resources/sample-war.war")
+    @real_war = File.new("spec/resources/sample-war.war")
 
     @huge_war = create_fake_war(100)
     @too_huge_war = create_fake_war(101)
