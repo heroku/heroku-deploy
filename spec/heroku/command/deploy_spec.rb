@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Heroku::Command::Direct do
+describe Heroku::Command::Deploy do
 
   before(:all) do
     @app_name = ENV['HEROKU_TEST_APP_NAME']
@@ -18,18 +18,18 @@ describe Heroku::Command::Direct do
   context "when command options are are initialized" do
     #noinspection RubyArgCount
     #noinspection RubyWrongHash
-    let (:options) { Heroku::Command.commands['direct:war'][:options] }
+    let (:options) { Heroku::Command.commands['deploy:war'][:options] }
 
     it { options.has_key?("war").should be_true }
   end
 
   context "when a war file and valid app is specified" do
     #noinspection RubyArgCount
-    let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => @real_war.path }
+    let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => @real_war.path }
 
     context "and everything is peachy" do
       it "the war should be deployed" do
-        direct.war.should eql "success"
+        deploy.war.should eql "success"
       end
 
       it "the result should be visible in browser" do
@@ -39,66 +39,66 @@ describe Heroku::Command::Direct do
 
     context "when heroku credentials are invalid" do
       before do
-        direct.stub(:api_key).and_return "something_invalid"
+        deploy.stub(:api_key).and_return "something_invalid"
       end
 
       it "an error should be raised" do
-        lambda { direct.war }.should raise_error(Heroku::Command::CommandFailed, /Unable to get user info/)
+        lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, /Unable to get user info/)
       end
     end
   end
 
   context "when a war file is huge" do
     #noinspection RubyArgCount
-    let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => @huge_war.path }
+    let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => @huge_war.path }
 
     it "the war should be deployed" do
-      direct.war.should eql "success"
+      deploy.war.should eql "success"
     end
   end
 
   context "when a war file is too huge" do
     #noinspection RubyArgCount
-    let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => @too_huge_war.path }
+    let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => @too_huge_war.path }
 
     it "an error should be raised" do
-      lambda { direct.war }.should raise_error(Heroku::Command::CommandFailed, "War file must not exceed 100 MB")
+      lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "War file must not exceed 100 MB")
     end
   end
 
   context "when a war file and app without access is specified" do
     #noinspection RubyArgCount
-    let(:direct) { Heroku::Command::Direct.new [], :app => "an-app-i-do-not-own", :war => @real_war.path }
+    let(:deploy) { Heroku::Command::Deploy.new [], :app => "an-app-i-do-not-own", :war => @real_war.path }
 
       it "an error should be raised" do
-        lambda { direct.war }.should raise_error(Heroku::Command::CommandFailed, "No access to this app")
+        lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "No access to this app")
       end
     end
 
   context "when no war file is specified" do
     #noinspection RubyArgCount
-    let(:direct) { Heroku::Command::Direct.new [], :app => @app_name }
+    let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name }
 
     it "an error should be raised" do
-      lambda { direct.war }.should raise_error(Heroku::Command::CommandFailed, "No .war specified.\nSpecify which war to use with --war <war file name>")
+      lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "No .war specified.\nSpecify which war to use with --war <war file name>")
     end
   end
 
   context "when a war file without a .war extension is specified" do
     #noinspection RubyArgCount
-    let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => "something.notwar" }
+    let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => "something.notwar" }
 
     it "an error should be raised" do
-      lambda { direct.war }.should raise_error(Heroku::Command::CommandFailed, "War file must have a .war extension")
+      lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "War file must have a .war extension")
     end
   end
 
   context "when a war file is specified but can't be found'" do
     #noinspection RubyArgCount
-    let(:direct) { Heroku::Command::Direct.new [], :app => @app_name, :war => "not_there.war" }
+    let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => "not_there.war" }
 
     it "an error should be raised" do
-      lambda { direct.war }.should raise_error(Heroku::Command::CommandFailed, "War file not found")
+      lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "War file not found")
     end
   end
 

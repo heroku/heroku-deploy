@@ -4,7 +4,7 @@ require 'net/http'
 
 # deploy to an app
 #
-class Heroku::Command::Direct < Heroku::Command::BaseWithApp
+class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
   VERSION = "0.1"
   DEFAULT_HOST = "direct-to.herokuapp.com"
   MAX_UPLOAD_SIZE_MB = 100
@@ -17,19 +17,19 @@ class Heroku::Command::Direct < Heroku::Command::BaseWithApp
   RESPONSE_KEY_MESSAGE = 'message'
   RESPONSE_KEY_RELEASE = 'release'
 
-  # direct
+  # deploy
   #
   # deploy to an app
   #
   def index
-    display "Usage: heroku direct:war"
+    display "Usage: heroku deploy:war"
   end
 
-  # direct:war
+  # deploy:war
   #
   # deploy a war file to an app
   #
-  # -w, --war WARFILE         # war to push
+  # -w, --war WARFILE         # war to deploy
   #
   def war
     war = extract_option("--war")
