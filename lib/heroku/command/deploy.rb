@@ -96,7 +96,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
 
   def headers
     {
-        'User-Agent'       => "heroku-cli/#{VERSION}",
+        'User-Agent'       => "cli-plugin/#{VERSION}",
         'X-Ruby-Version'   => RUBY_VERSION,
         'X-Ruby-Platform'  => RUBY_PLATFORM
     }
