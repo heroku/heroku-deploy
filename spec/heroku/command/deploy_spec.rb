@@ -73,7 +73,16 @@ describe Heroku::Command::Deploy do
       it "an error should be raised" do
         lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "No access to this app")
       end
+  end
+
+  context "when a war file and no app is specified" do
+    #noinspection RubyArgCount
+    let(:deploy) { Heroku::Command::Deploy.new [], :war => @real_war.path }
+
+    it "an error should be raised" do
+      lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "No app specified.\nRun this command from an app folder or specify which app to use with --app <app name>")
     end
+  end
 
   context "when no war file is specified" do
     #noinspection RubyArgCount

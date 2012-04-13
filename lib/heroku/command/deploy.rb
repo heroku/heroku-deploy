@@ -53,7 +53,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
 
     begin
       heroku.get("/apps/#{app}")
-    rescue
+    rescue RestClient::ResourceNotFound => e
       raise Heroku::Command::CommandFailed, "No access to this app"
     end
 
