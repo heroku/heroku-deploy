@@ -5,14 +5,6 @@ describe Heroku::Command::Deploy do
   before(:all) do
     @app_name = ENV['HEROKU_TEST_APP_NAME']
     @real_war = File.new("spec/resources/sample-war.war")
-
-    @huge_war = create_fake_war(100)
-    @too_huge_war = create_fake_war(101)
-  end
-
-  after(:all) do
-    @huge_war.unlink
-    @too_huge_war.unlink
   end
 
   context "when command options are are initialized" do
@@ -49,17 +41,26 @@ describe Heroku::Command::Deploy do
   end
 
   context "when a war file is huge" do
+    let(:huge_war) { create_fake_war(100) }
+
     #noinspection RubyArgCount
-    let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => @huge_war.path }
+    let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => huge_war.path }
+
+    after { huge_war.unlink }
 
     it "the war should be deployed" do
       deploy.war.should eql "success"
     end
   end
 
+  #todo
   context "when a war file is too huge" do
+    let(:too_huge_war) { create_fake_war(101) }
+
     #noinspection RubyArgCount
-    let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => @too_huge_war.path }
+    let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => too_huge_war.path }
+
+    after { too_huge_war.unlink }
 
     it "an error should be raised" do
       lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "War file must not exceed 100 MB")

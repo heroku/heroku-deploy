@@ -68,20 +68,20 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
       end
 
       status = json_decode(response)[RESPONSE_KEY_STATUS]
-      monitorHash = nil
+      monitor_hash = nil
       while status == STATUS_IN_PROGRESS
-        monitorResponse = RestClient.get "https://#{host}#{polling_endpoint}", headers
-        monitorHash = json_decode(monitorResponse)
-        status = monitorHash[RESPONSE_KEY_STATUS]
+        monitor_response = RestClient.get "https://#{host}#{polling_endpoint}", headers
+        monitor_hash = json_decode(monitor_response)
+        status = monitor_hash[RESPONSE_KEY_STATUS]
         if status != STATUS_SUCCESS && status != STATUS_FAILED
           sleep 5
         end
       end
 
       if status == STATUS_SUCCESS
-        display(monitorHash[RESPONSE_KEY_MESSAGE] + " " + monitorHash[RESPONSE_KEY_RELEASE])
+        display(monitor_hash[RESPONSE_KEY_MESSAGE] + " " + monitor_hash[RESPONSE_KEY_RELEASE])
       else
-        raise(monitorHash[RESPONSE_KEY_MESSAGE])
+        raise(monitor_hash[RESPONSE_KEY_MESSAGE])
       end
     rescue Exception => e
       raise Heroku::Command::CommandFailed, e.message
