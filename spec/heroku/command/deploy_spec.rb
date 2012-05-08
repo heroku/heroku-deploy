@@ -19,9 +19,25 @@ describe Heroku::Command::Deploy do
     #noinspection RubyArgCount
     let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => @real_war.path }
 
+    captured_print_and_flush = ""
+
+    before do
+      deploy.stub(:print_and_flush).and_return do |str|
+        captured_print_and_flush += str
+      end
+    end
+
     context "and everything is peachy" do
       it "the war should be deployed" do
         deploy.war.should eql "success"
+      end
+
+      it "the upload status indicator should be printed" do
+        (captured_print_and_flush.include? "Uploading #{@real_war.path}....").should be_true
+      end
+
+      it "the deploy status indicator should be printed" do
+        (captured_print_and_flush.include? "Deploying to #{@app_name}....").should be_true
       end
 
       it "the result should be visible in browser" do
