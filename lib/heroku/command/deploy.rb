@@ -66,7 +66,19 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
         print_and_flush(".")
         sleep 2
       end
-      response = upload_thread.value
+
+      begin
+        response = upload_thread.value
+      rescue Exception => e
+        if (e.respond_to? 'response')
+          error_response = json_decode(e.response)
+          if (error_response.has_key? RESPONSE_KEY_MESSAGE)
+            raise Heroku::Command::CommandFailed, error_response[RESPONSE_KEY_MESSAGE]
+          end
+        end
+        raise e
+      end
+
       print_and_flush("done\n")
 
       if response.code == HTTP_STATUS_ACCEPTED

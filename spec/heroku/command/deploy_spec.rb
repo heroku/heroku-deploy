@@ -51,7 +51,7 @@ describe Heroku::Command::Deploy do
       end
 
       it "an error should be raised" do
-        lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, /Unable to get user info/)
+        lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "API key must be provided for user with access to app [#{@app_name}]")
       end
     end
   end
