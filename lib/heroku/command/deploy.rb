@@ -58,7 +58,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
     end
 
     begin
-      print_and_flush("uploading #{war}...")
+      print_and_flush("Uploading #{war}...")
       upload_thread = Thread.new do
         RestClient.post "https://:#{api_key}@#{host}/direct/#{app}/war", {:war => File.new(war, 'rb')}, headers
       end
@@ -75,7 +75,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
         raise RuntimeError, "Upload not accepted"
       end
 
-      print_and_flush("deploying to #{app}...")
+      print_and_flush("Deploying to #{app}...")
       status = json_decode(response)[RESPONSE_KEY_STATUS]
       monitor_hash = nil
       while status == STATUS_IN_PROGRESS
@@ -90,7 +90,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
       print_and_flush("done\n")
 
       if status == STATUS_SUCCESS
-        display(monitor_hash[RESPONSE_KEY_MESSAGE] + " " + monitor_hash[RESPONSE_KEY_RELEASE])
+        display((monitor_hash[RESPONSE_KEY_MESSAGE] + " " + monitor_hash[RESPONSE_KEY_RELEASE]).capitalize)
       else
         raise(monitor_hash[RESPONSE_KEY_MESSAGE])
       end
