@@ -5,7 +5,7 @@ require 'net/http'
 # deploy to an app
 #
 class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
-  VERSION = "0.2"
+  VERSION = "0.3"
   DEFAULT_HOST = "direct-to.herokuapp.com"
   MAX_UPLOAD_SIZE_MB = 100
   MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB*1024*1024
@@ -32,7 +32,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
   # -w, --war WARFILE         # war to deploy
   #
   def war
-    war = extract_option("--war")
+    war = options[:war]
     host = DEFAULT_HOST
 
     if war == nil
