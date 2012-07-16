@@ -30,7 +30,7 @@ or
 
 Use the following command to create a new application on Heroku
 
-    heroku create --stack cedar [app_name]
+    heroku create
 
 ### 3. Create a WAR file
 
