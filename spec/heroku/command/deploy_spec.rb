@@ -10,9 +10,8 @@ describe Heroku::Command::Deploy do
   context "when command options are are initialized" do
     #noinspection RubyArgCount
     #noinspection RubyWrongHash
-    let (:options) { Heroku::Command.commands['deploy:war'][:options] }
-
-    it { options.has_key?("war").should be_true }
+    let (:options) { Heroku::Command.commands['deploy:war'][:options][0] }
+    it { options[:name].should eql "war" }
   end
 
   context "when a war file and valid app is specified" do
@@ -57,7 +56,7 @@ describe Heroku::Command::Deploy do
   end
 
   context "when a war file is huge" do
-    let(:huge_war) { create_fake_war(100) }
+    let(:huge_war) { create_fake_war(199) }
 
     #noinspection RubyArgCount
     let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => huge_war.path }
@@ -71,7 +70,7 @@ describe Heroku::Command::Deploy do
 
   #todo
   context "when a war file is too huge" do
-    let(:too_huge_war) { create_fake_war(101) }
+    let(:too_huge_war) { create_fake_war(202) }
 
     #noinspection RubyArgCount
     let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => too_huge_war.path }
@@ -79,7 +78,7 @@ describe Heroku::Command::Deploy do
     after { too_huge_war.unlink }
 
     it "an error should be raised" do
-      lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "War file must not exceed 100 MB")
+      lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "War file must not exceed 200 MB")
     end
   end
 
@@ -97,7 +96,7 @@ describe Heroku::Command::Deploy do
     let(:deploy) { Heroku::Command::Deploy.new [], :war => @real_war.path }
 
     it "an error should be raised" do
-      lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "No app specified.\nRun this command from an app folder or specify which app to use with --app <app name>")
+      lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "No app specified.\nRun this command from an app folder or specify which app to use with --app APP.")
     end
   end
 
