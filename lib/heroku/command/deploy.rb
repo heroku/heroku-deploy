@@ -5,9 +5,9 @@ require 'net/http'
 # deploy to an app
 #
 class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
-  VERSION = "0.5"
+  VERSION = "0.6"
   DEFAULT_HOST = ENV['DIRECT_TO_HOST'] || "direct-to.herokuapp.com"
-  MAX_UPLOAD_SIZE_MB = 200
+  MAX_UPLOAD_SIZE_MB = 300
   MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB*1024*1024
   HTTP_STATUS_ACCEPTED = 202
   STATUS_IN_PROGRESS = "inprocess"

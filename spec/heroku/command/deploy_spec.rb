@@ -78,7 +78,7 @@ describe Heroku::Command::Deploy do
     after { too_huge_war.unlink }
 
     it "an error should be raised" do
-      lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "War file must not exceed 200 MB")
+      lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "War file must not exceed 300 MB")
     end
   end
 
