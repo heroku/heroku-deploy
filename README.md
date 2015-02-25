@@ -1,3 +1,7 @@
+##! Deprecated ! 
+
+This plugin is deprecated. Please see the [WAR deployment article on DevCenter](https://devcenter.heroku.com/articles/war-deployment) 
+
 # Getting started with WAR deployment on Heroku
 
 ## Pre requisites
