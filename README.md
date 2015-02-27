@@ -24,7 +24,6 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode)
 
 Use the following command to install the <code>heroku-deploy</code> plugin:
 
-    ### Git URL needs to be finalized
     heroku plugins:install https://github.com/heroku/heroku-deploy
 
 <b>Note</b>: If you have a previous version of Heroku client, please ensure you update to the latest version. You should have <code>ver 2.24.0</code> of the Heroku command line. To verify your version, type the following command:
@@ -34,7 +33,7 @@ Use the following command to install the <code>heroku-deploy</code> plugin:
 
 or
 
-     C:\>heroku version
+     C:\> heroku version
      2.24.0
 
 ### 3. Create a Heroku application
