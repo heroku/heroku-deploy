@@ -21,7 +21,7 @@ describe Heroku::Command::Deploy do
     captured_print_and_flush = ""
 
     before do
-      deploy.stub(:print_and_flush).and_return do |str|
+      deploy.stub(:log).and_return do |str|
         captured_print_and_flush += str
       end
     end
@@ -35,22 +35,9 @@ describe Heroku::Command::Deploy do
         (captured_print_and_flush.include? "Uploading #{@real_war.path}....").should be_true
       end
 
-      it "the deploy status indicator should be printed" do
-        (captured_print_and_flush.include? "Deploying to #{@app_name}....").should be_true
-      end
-
       it "the result should be visible in browser" do
-        (RestClient.get("http://#{@app_name}.herokuapp.com").include? "Hello World").should be_true
-      end
-    end
-
-    context "when heroku credentials are invalid" do
-      before do
-        deploy.stub(:api_key).and_return "something_invalid"
-      end
-
-      it "an error should be raised" do
-        lambda { deploy.war }.should raise_error(Heroku::Command::CommandFailed, "API key must be provided for user with access to app [#{@app_name}]")
+        sleep(10)
+        expect(RestClient.get("https://#{@app_name}.herokuapp.com")).to include("Hello World")
       end
     end
   end
@@ -70,7 +57,7 @@ describe Heroku::Command::Deploy do
 
   #todo
   context "when a war file is too huge" do
-    let(:too_huge_war) { create_fake_war(202) }
+    let(:too_huge_war) { create_fake_war(302) }
 
     #noinspection RubyArgCount
     let(:deploy) { Heroku::Command::Deploy.new [], :app => @app_name, :war => too_huge_war.path }

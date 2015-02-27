@@ -1,7 +1,3 @@
-##! Deprecated ! 
-
-This plugin is deprecated. Please see the [WAR deployment article on DevCenter](https://devcenter.heroku.com/articles/war-deployment) 
-
 # Getting started with WAR deployment on Heroku
 
 ## Pre requisites
@@ -13,7 +9,18 @@ You will require the following:
 
 ## Getting started
 
-### 1. Install the <code>heroku-deploy</code> CLI plugin
+### 1. Make sure Java 7 or higher is installed
+
+Run the following command to confirm:
+
+```sh-session
+$ java -version
+java version "1.7.0_51"
+Java(TM) SE Runtime Environment (build 1.7.0_51-b13)
+Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode)
+```
+
+### 2. Install the <code>heroku-deploy</code> CLI plugin
 
 Use the following command to install the <code>heroku-deploy</code> plugin:
 
@@ -26,34 +33,48 @@ Use the following command to install the <code>heroku-deploy</code> plugin:
      2.24.0
 
 or
- 
+
      C:\>heroku version
      2.24.0
 
-### 2. Create a Heroku application
+### 3. Create a Heroku application
 
 Use the following command to create a new application on Heroku
 
     heroku create
 
-### 3. Create a WAR file
+### 4. Create a WAR file
 
-You can use any method to generate a WAR file. You can use <code>maven</code>,<code>ant</code> or simply export your application from your IDE as a WAR file. 
+You can use any method to generate a WAR file. You can use <code>maven</code>,<code>ant</code> or simply export your application from your IDE as a WAR file.
 
 The only requirement is that the WAR file is a standard Java web application and adheres to the standard web application structure and conventions.
 
-### 4. Deploy your WAR 
+### 5. Deploy your WAR
 
 In order to deploy your WAR use the following command:
 
-    heroku deploy:war --war <absolute_path_to_war_file> --app <app_name> 
+    $ heroku deploy:war --war <path_to_war_file> --app <app_name>
+    Uploading my-app.war....
+    ---> Packaging application...
+    - app: my-app
+    - including: webapp-runner.jar
+    - including: my-app.war
+    - installing: OpenJDK 1.8
+    ---> Creating slug...
+    - file: slug.tgz
+    - size: 56MB
+    ---> Uploading slug...
+    - stack: cedar-14
+    - process types: [web]
+    ---> Releasing...
+    - version: 24
 
 If you are in an application directory, you can use the following command instead::
 
-    heroku deploy:war --war <absolute_path_to_war_file>
+    heroku deploy:war --war <path_to_war_file>
 
-### 5. View your app on Heroku
+### 6. View your app on Heroku
 
 Use the following command to open the application on the browser:
 
-    heroku open 
+    heroku open
