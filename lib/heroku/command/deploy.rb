@@ -51,7 +51,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
 
     begin
       log("Uploading #{war}....")
-      system "java \
+      system "java -Xmx1g \
                 -Dheroku.warFile=#{File.expand_path(war)} \
                 -Dheroku.appName=#{app} \
                 -jar #{Heroku::Plugin.directory}/heroku-deploy/heroku-deploy-complete.jar"
