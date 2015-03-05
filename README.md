@@ -77,3 +77,18 @@ If you are in an application directory, you can use the following command instea
 Use the following command to open the application on the browser:
 
     heroku open
+
+## Configuration
+
+You can configure how the WAR file executes on the server by setting the
+WEBAPP_RUNNER_OPTS configuration variable on your application. For example,
+you might set the following option:
+
+```term
+$ heroku config:set WEBAPP_RUNNER_OPTS="--uri-encoding=UTF-8"
+```
+
+The `heroku-deploy` plugin uses Tomcat Webapp Runner as a container for the
+WAR file. Thus, all Webapp Runner options are available to the app. A full list
+options is described in the
+[Webapp Runner documentation](https://github.com/jsimone/webapp-runner#options).
