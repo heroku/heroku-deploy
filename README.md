@@ -1,6 +1,10 @@
-# Getting started with WAR deployment on Heroku
+# Heroku Deploy
 
-## Pre requisites
+This project is a [Heroku toolbelt](https://toolbelt.heroku.com/)
+plugin for [deploying WAR files](https://devcenter.heroku.com/articles/war-deployment).
+See also: [Heroku Maven plugin](https://devcenter.heroku.com/articles/deploying-java-applications-with-the-heroku-maven-plugin).
+
+## Prerequisites
 
 You will require the following:
 
@@ -55,18 +59,19 @@ In order to deploy your WAR use the following command:
     $ heroku deploy:war --war <path_to_war_file> --app <app_name>
     Uploading my-app.war....
     ---> Packaging application...
-    - app: my-app
-    - including: webapp-runner.jar
-    - including: my-app.war
-    - installing: OpenJDK 1.8
+         - app: my-app
+         - including: webapp-runner.jar
+         - including: my-app.war
+         - installing: OpenJDK 1.8
     ---> Creating slug...
-    - file: slug.tgz
-    - size: 56MB
+         - file: slug.tgz
+         - size: 56MB
     ---> Uploading slug...
-    - stack: cedar-14
-    - process types: [web]
+         - stack: cedar-14
+         - process types: [web]
     ---> Releasing...
-    - version: 24
+         - version: 24
+    ---> Done
 
 If you are in an application directory, you can use the following command instead::
 
