@@ -92,3 +92,13 @@ The `heroku-deploy` plugin uses Tomcat Webapp Runner as a container for the
 WAR file. Thus, all Webapp Runner options are available to the app. A full list
 options is described in the
 [Webapp Runner documentation](https://github.com/jsimone/webapp-runner#options).
+
+You can also configure the underlying JVM that runs the Tomcat container by
+setting the JAVA_OPTS configuration variable. For example, you set the
+following option:
+
+```term
+$ heroku config:set JAVA_OPTS="-Xss512k"
+```
+
+However, [the Heroku platform will select a good set of defaults](https://devcenter.heroku.com/articles/java-support#environment) for you.
