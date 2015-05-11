@@ -57,22 +57,32 @@ The only requirement is that the WAR file is a standard Java web application and
 
 In order to deploy your WAR use the following command:
 
-    $ heroku deploy:war --war <path_to_war_file> --app <app_name>
-    Uploading my-app.war....
-    ---> Packaging application...
-         - app: my-app
-         - including: webapp-runner.jar
-         - including: my-app.war
-         - installing: OpenJDK 1.8
-    ---> Creating slug...
-         - file: slug.tgz
-         - size: 56MB
-    ---> Uploading slug...
-         - stack: cedar-14
-         - process types: [web]
-    ---> Releasing...
-         - version: 24
-    ---> Done
+```sh-session
+$ heroku deploy:war --war <path_to_war_file> --app <app_name>
+Uploading my-app.war....
+---> Packaging application...
+    - app: my-app
+    - including: webapp-runner.jar
+    - including: my-app.war
+---> Creating build...
+    - file: slug.tgz
+    - size: 1MB
+---> Uploading build...
+    - success
+---> Deploying...
+remote:
+remote: -----> Fetching custom tar buildpack... done
+remote: -----> JVM Common app detected
+remote: -----> Installing OpenJDK 1.8... done
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote:
+remote: -----> Compressing... done, 50.3MB
+remote: -----> Launching... done, v5
+remote:        https://jkutner-test.herokuapp.com/ deployed to Heroku
+remote:
+---> Done
+```
 
 If you are in an application directory, you can use the following command instead::
 
