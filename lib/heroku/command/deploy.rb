@@ -9,6 +9,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
   MAX_UPLOAD_SIZE_MB = 300
   MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB*1024*1024
   STATUS_SUCCESS = "success"
+  JAR_FILE = "#{Heroku::Plugin.directory}/heroku-deploy/heroku-deploy-complete.jar"
 
   # deploy
   #
@@ -23,6 +24,8 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
   # deploy a war file to an app
   #
   # -w, --war WARFILE         # war to deploy
+  # -v, --jdk VERSION      # 7 or 8. defaults to 8
+  # -i, --includes FILES   # list of files to include in the slug
   #
   def war
     war = options[:war]
@@ -51,11 +54,9 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
 
     begin
       log("Uploading #{war}....")
-      system "java -Xmx1g \
+      system "java #{jvm_opts} \
                 -Dheroku.warFile=#{File.expand_path(war)} \
-                -Dheroku.appName=#{app} \
-                -jar #{Heroku::Plugin.directory}/heroku-deploy/heroku-deploy-complete.jar"
-      log("---> Done")
+                -jar #{JAR_FILE}"
     rescue Exception => e
       raise Heroku::Command::CommandFailed, e.message
     end
@@ -67,9 +68,13 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
   # deploy an executable Jar or War file to an app
   #
   # -j, --jar FILE         # jar or war to deploy
+  # -v, --jdk VERSION      # 7 or 8. defaults to 8
+  # -o, --options OPTS     # options passed to the jar file
+  # -i, --includes FILES   # list of files to include in the slug
   #
   def jar
     jar = options[:jar]
+    opts = options[:options] || ""
 
     if jar == nil
       raise Heroku::Command::CommandFailed, "No .jar specified.\nSpecify which jar to use with --jar <jar file name>"
@@ -95,12 +100,11 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
 
     begin
       log("Uploading #{jar}....")
-      system "java -Xmx1g \
+      system "java #{jvm_opts} \
                 -Dheroku.jarFile=#{File.expand_path(jar)} \
-                -Dheroku.appName=#{app} \
-                -cp #{Heroku::Plugin.directory}/heroku-deploy/heroku-deploy-complete.jar \
+                -Dheroku.jarOpts=\"#{opts.gsub('$', '\$')}\" \
+                -cp #{JAR_FILE} \
                 com.heroku.sdk.deploy.DeployJar"
-      log("---> Done")
     rescue Exception => e
       raise Heroku::Command::CommandFailed, e.message
     end
@@ -108,6 +112,13 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
   end
 
   protected
+
+  def jvm_opts
+    opts = "-Xmx1g -Dheroku.appName=#{app}"
+    opts += " -Dheroku.jdkVersion=#{options[:jdk]}" if options[:jdk]
+    opts += " -Dheroku.includes=#{options[:includes]}" if options[:includes]
+    opts
+  end
 
   def log(str)
     puts str
