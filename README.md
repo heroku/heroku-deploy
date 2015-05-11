@@ -79,7 +79,7 @@ remote:        Procfile declares types -> web
 remote:
 remote: -----> Compressing... done, 50.3MB
 remote: -----> Launching... done, v5
-remote:        https://jkutner-test.herokuapp.com/ deployed to Heroku
+remote:        https://my-app.herokuapp.com/ deployed to Heroku
 remote:
 ---> Done
 ```
