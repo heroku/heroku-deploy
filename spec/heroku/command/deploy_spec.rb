@@ -3,6 +3,7 @@ require "spec_helper"
 describe Heroku::Command::Deploy do
 
   before(:all) do
+    ENV['HEROKU_DEPLOY_JAR_PATH'] = File.absolute_path("heroku-deploy-complete.jar")
     @app_name = ENV['HEROKU_TEST_APP_NAME']
   end
 

@@ -103,7 +103,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
       system "java #{jvm_opts} \
                 -Dheroku.jarFile=#{File.expand_path(jar)} \
                 -Dheroku.jarOpts=\"#{opts.gsub('$', '\$')}\" \
-                -cp #{JAR_FILE} \
+                -cp #{ENV['HEROKU_DEPLOY_JAR_PATH'] || JAR_FILE} \
                 com.heroku.sdk.deploy.DeployJar"
     rescue Exception => e
       raise Heroku::Command::CommandFailed, e.message
