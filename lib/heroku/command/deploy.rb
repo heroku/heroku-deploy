@@ -56,7 +56,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
       log("Uploading #{war}....")
       system "java #{jvm_opts} \
                 -Dheroku.warFile=#{File.expand_path(war)} \
-                -jar #{JAR_FILE}"
+                -jar #{ENV['HEROKU_DEPLOY_JAR_PATH'] || JAR_FILE}"
     rescue Exception => e
       raise Heroku::Command::CommandFailed, e.message
     end
