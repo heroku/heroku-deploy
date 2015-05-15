@@ -40,8 +40,7 @@ describe Heroku::Command::Deploy do
           (captured_print_and_flush.include? "Uploading #{@real_war.path}....").should be_true
         end
 
-        it "the result should be visible in browser" do
-          sleep(10)
+        it "the result should be visible in browser", :retry => 5, :retry_wait => 10 do
           expect(RestClient.get("https://#{@app_name}.herokuapp.com")).to include("Hello World")
         end
       end
@@ -153,8 +152,7 @@ describe Heroku::Command::Deploy do
           (captured_print_and_flush.include? "Uploading #{@real_jar.path}....").should be_true
         end
 
-        it "the result should be visible in browser" do
-          sleep(10)
+        it "the result should be visible in browser", :retry => 5, :retry_wait => 10 do
           expect(RestClient.get("https://#{@app_name}.herokuapp.com")).to include("Hello from Java!")
         end
       end
