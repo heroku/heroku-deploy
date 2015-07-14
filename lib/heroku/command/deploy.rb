@@ -5,7 +5,7 @@ require 'net/http'
 # deploy to an app
 #
 class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
-  VERSION = "0.9"
+  VERSION = "0.10"
   MAX_UPLOAD_SIZE_MB = 300
   MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB*1024*1024
   STATUS_SUCCESS = "success"
@@ -23,9 +23,10 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
   #
   # deploy a war file to an app
   #
-  # -w, --war WARFILE         # war to deploy
-  # -v, --jdk VERSION      # 7 or 8. defaults to 8
-  # -i, --includes FILES   # list of files to include in the slug
+  # -w, --war WARFILE            # war to deploy
+  # -r, --webapp-runner VERSION  # defaults to 8.0.23.0
+  # -j, --jdk VERSION            # 7 or 8. defaults to 8
+  # -i, --includes FILES         # list of files to include in the slug
   #
   def war
     war = options[:war]
@@ -53,6 +54,20 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
     end
 
     begin
+      log(<<TEXT) unless options[:webapp_runner]
++-------------------------------------------------------------------------------
+| WARNING: This plugin was recently upgraded to use Tomcat 8. If you are
+| experiencing problems or require Tomcat 7, try defining a specific version
+| by adding the `--webapp-runner` option to your command. For example:
+|
+|  $ heroku deploy:war -w myapp.war --webapp-runner 7.0.57.2 -a appname
+|
+| If you have any trouble, please contact Heroku Support by opening a
+| ticket at http://help.heroku.com
++-------------------------------------------------------------------------------
+
+TEXT
+
       log("Uploading #{war}....")
       system "java #{jvm_opts} \
                 -Dheroku.warFile=#{File.expand_path(war)} \
@@ -115,6 +130,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
 
   def jvm_opts
     opts = "-Xmx1g -Dheroku.appName=#{app}"
+    opts += " -Dheroku.webappRunnerVersion=#{options[:webapp_runner]}" if options[:webapp_runner]
     opts += " -Dheroku.jdkVersion=#{options[:jdk]}" if options[:jdk]
     opts += " -Dheroku.includes=#{options[:includes]}" if options[:includes]
     opts
