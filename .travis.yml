@@ -1,7 +1,7 @@
 env:
   global:
   - HEROKU_TEST_APP_NAME="heroku-deploy-plugin-test"
-  - secure: VfQ5tSDLl4MYAnSpO9lOZCezML6HZ1Kny/JE2myTrxaW5v5oIXE8c6Cn3ZCvOwsPbTrSoEPMJcHq+M55UhDpzcWCGatfrkLrZ/qAF3TC98ZIKwVbvf66rB+gd1SMG1hAIXaJeu8a3scPbRx1zybtJC6GUVHNFNKgj7Qv7dhneBg=
+  - secure: oa2H5hF7FDq4dbYRaA8etk1C2ju+5nmKN51oxKnwh6vi7MhZXPUhc3oTNQCqjg/Dq91xKcakgSU+vRQ2uxPfomdaPBrZKL+1zHCER8fI3CJoVQyPnBCX2t8RuXWzI9gVYQmxk4OMVFBK176bUo0kmeFmRCqMC45DuVEqqtFwB70=
 language: ruby
 install:
 - "./etc/travis-setup.sh"
