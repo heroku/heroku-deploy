@@ -55,7 +55,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
 
     begin
       log(<<TEXT) unless options[:webapp_runner]
-+-------------------------------------------------------------------------------
++------------------------------------------------------------------------------
 | WARNING: This plugin was recently upgraded to use Tomcat 8. If you are
 | experiencing problems or require Tomcat 7, try defining a specific version
 | by adding the `--webapp-runner` option to your command. For example:
@@ -64,7 +64,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
 |
 | If you have any trouble, please contact Heroku Support by opening a
 | ticket at http://help.heroku.com
-+-------------------------------------------------------------------------------
++------------------------------------------------------------------------------
 
 TEXT
 
