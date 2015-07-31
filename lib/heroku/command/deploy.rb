@@ -5,7 +5,7 @@ require 'net/http'
 # deploy to an app
 #
 class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
-  VERSION = "0.10"
+  VERSION = "0.11"
   MAX_UPLOAD_SIZE_MB = 300
   MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB*1024*1024
   STATUS_SUCCESS = "success"
@@ -70,7 +70,7 @@ TEXT
 
       log("Uploading #{war}....")
       system "java #{jvm_opts} \
-                -Dheroku.warFile=#{File.expand_path(war)} \
+                -Dheroku.warFile=\"#{File.expand_path(war)}\" \
                 -jar #{ENV['HEROKU_DEPLOY_JAR_PATH'] || JAR_FILE}"
     rescue Exception => e
       raise Heroku::Command::CommandFailed, e.message
@@ -116,7 +116,7 @@ TEXT
     begin
       log("Uploading #{jar}....")
       system "java #{jvm_opts} \
-                -Dheroku.jarFile=#{File.expand_path(jar)} \
+                -Dheroku.jarFile=\"#{File.expand_path(jar)}\" \
                 -Dheroku.jarOpts=\"#{opts.gsub('$', '\$')}\" \
                 -cp #{ENV['HEROKU_DEPLOY_JAR_PATH'] || JAR_FILE} \
                 com.heroku.sdk.deploy.DeployJar"
