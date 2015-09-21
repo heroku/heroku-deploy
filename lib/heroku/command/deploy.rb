@@ -5,7 +5,7 @@ require 'net/http'
 # deploy to an app
 #
 class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
-  VERSION = "0.11"
+  VERSION = "0.12"
   MAX_UPLOAD_SIZE_MB = 300
   MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB*1024*1024
   STATUS_SUCCESS = "success"
@@ -54,20 +54,6 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
     end
 
     begin
-      log(<<TEXT) unless options[:webapp_runner]
-+------------------------------------------------------------------------------
-| WARNING: This plugin was recently upgraded to use Tomcat 8. If you are
-| experiencing problems or require Tomcat 7, try defining a specific version
-| by adding the `--webapp-runner` option to your command. For example:
-|
-|  $ heroku deploy:war -w myapp.war --webapp-runner 7.0.57.2 -a appname
-|
-| If you have any trouble, please contact Heroku Support by opening a
-| ticket at http://help.heroku.com
-+------------------------------------------------------------------------------
-
-TEXT
-
       log("Uploading #{war}....")
       system "java #{jvm_opts} \
                 -Dheroku.warFile=\"#{File.expand_path(war)}\" \
