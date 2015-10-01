@@ -94,6 +94,23 @@ Use the following command to open the application on the browser:
 
     heroku open
 
+## Executable JAR Files
+
+You can also use this tool to deploy executable JAR files. To do so, run a command like this:
+
+```
+$ heroku deploy:jar --jar <path_to_jar> --app <appname>
+```
+
+Available options include:
+
+```
+ -j, --jar FILE         # jar or war to deploy
+ -v, --jdk VERSION      # 7 or 8. defaults to 8
+ -o, --options OPTS     # options passed to the jar file
+ -i, --includes FILES   # list of files to include in the slug
+```
+
 ## Configuration
 
 You can configure how the WAR file executes on the server by setting the
