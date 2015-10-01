@@ -1,8 +1,10 @@
-# Heroku Deploy War [![Build Status](https://travis-ci.org/heroku/heroku-deploy.svg)](https://travis-ci.org/heroku/heroku-deploy)
+# Heroku Deploy War/Jar [![Build Status](https://travis-ci.org/heroku/heroku-deploy.svg)](https://travis-ci.org/heroku/heroku-deploy)
 
 This project is a [Heroku toolbelt](https://toolbelt.heroku.com/)
-plugin for [deploying WAR files](https://devcenter.heroku.com/articles/war-deployment).
-See also: [Heroku Maven plugin](https://devcenter.heroku.com/articles/deploying-java-applications-with-the-heroku-maven-plugin),
+plugin for [deploying WAR files](https://devcenter.heroku.com/articles/war-deployment). It can also be used to deploy
+[executable JAR files](#executable-jar-files).
+
+If you are using Maven, see also the [Heroku Maven plugin](https://devcenter.heroku.com/articles/deploying-java-applications-with-the-heroku-maven-plugin),
 a more robust method of WAR file deployment.
 
 ## Prerequisites
