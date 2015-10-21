@@ -5,7 +5,7 @@ require 'net/http'
 # deploy to an app
 #
 class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
-  VERSION = "0.12"
+  VERSION = "0.13"
   MAX_UPLOAD_SIZE_MB = 300
   MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB*1024*1024
   STATUS_SUCCESS = "success"
