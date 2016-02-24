@@ -31,23 +31,13 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode)
 
 Use the following command to install the <code>heroku-deploy</code> plugin:
 
-    heroku plugins:install https://github.com/heroku/heroku-deploy
-
-<b>Note</b>: If you have a previous version of Heroku client, please ensure you update to the latest version. You should have <code>ver 2.24.0</code> of the Heroku command line. To verify your version, type the following command:
-
-     $ heroku version
-     2.24.0
-
-or
-
-     C:\> heroku version
-     2.24.0
+    $ heroku plugins:install https://github.com/heroku/heroku-deploy
 
 ### 3. Create a Heroku application
 
 Use the following command to create a new application on Heroku
 
-    heroku create
+    $ heroku create
 
 ### 4. Create a WAR file
 
@@ -95,6 +85,16 @@ If you are in an application directory, you can use the following command instea
 Use the following command to open the application on the browser:
 
     heroku open
+    
+### Customizing your deployment
+
+You can include additional files in your slug with the `--include` option. 
+
+```
+heroku deploy:war --war myapp.war --includes newrelic.jar:newrelic.xml
+```
+
+The character separating the included files is platform specific, just like [File.pathSeparator](http://docs.oracle.com/javase/8/docs/api/java/io/File.html#pathSeparator). On Windows it will be `;` (semi-colon) and on Mac and Linux it will be `:` (colon).
 
 ## Executable JAR Files
 
@@ -112,6 +112,16 @@ Available options include:
  -o, --options OPTS     # options passed to the jar file
  -i, --includes FILES   # list of files to include in the slug
 ```
+
+### Customizing your deployment
+
+You can customize the command used to run your application by creating a `Procfile` in the *same directory* as your run the `heroku deploy:jar` command. For example:
+
+```
+web: java -cp my-uberjar.jar com.foo.MyMain opt1 opt2
+```
+
+You can view your current Procfile command by running `heroku ps`.
 
 ## Configuration
 
