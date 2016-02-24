@@ -88,7 +88,7 @@ Use the following command to open the application on the browser:
     
 ### Customizing your deployment
 
-You can include additional files in your slug with the `--include` option. 
+You can include additional files in your slug with the `--includes` option. 
 
 ```
 heroku deploy:war --war myapp.war --includes newrelic.jar:newrelic.xml
