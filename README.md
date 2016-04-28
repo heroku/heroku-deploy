@@ -85,45 +85,9 @@ If you are in an application directory, you can use the following command instea
 Use the following command to open the application on the browser:
 
     heroku open
-    
-### Customizing your deployment
 
-#### Include Files
-
-You can include additional files in your slug with the `--includes` option. 
-
-```
-heroku deploy:war --war myapp.war --includes newrelic.jar:newrelic.xml
-```
-
-The character separating the included files is platform specific, just like [File.pathSeparator](http://docs.oracle.com/javase/8/docs/api/java/io/File.html#pathSeparator). On Windows it will be `;` (semi-colon) and on Mac and Linux it will be `:` (colon).
-
-#### Configure Tomcat Options
-
-You can configure how the WAR file executes on the server by setting the
-WEBAPP_RUNNER_OPTS configuration variable on your application. For example,
-you might set the following option:
-
-```term
-$ heroku config:set WEBAPP_RUNNER_OPTS="--uri-encoding=UTF-8"
-```
-
-The `heroku-deploy` plugin uses Tomcat Webapp Runner as a container for the
-WAR file. Thus, all Webapp Runner options are available to the app. A full list
-options is described in the
-[Webapp Runner documentation](https://github.com/jsimone/webapp-runner#options).
-
-#### Configure Java Options
-
-You can also configure the underlying JVM that runs the Tomcat container by
-setting the JAVA_OPTS configuration variable. For example, you set the
-following option:
-
-```term
-$ heroku config:set JAVA_OPTS="-Xss512k"
-```
-
-However, [the Heroku platform will select a good set of defaults](https://devcenter.heroku.com/articles/java-support#environment) for you.
+You can learn how to customize the deploy (such as including files and setting Tomcat options)
+in [Configuring WAR Deployment with the Heroku Toolbelt](https://devcenter.heroku.com/articles/configuring-war-deployment-with-the-heroku-toolbelt).
 
 ## Executable JAR Files
 
@@ -151,4 +115,3 @@ web: java -cp my-uberjar.jar com.foo.MyMain opt1 opt2
 ```
 
 You can view your current Procfile command by running `heroku ps`.
-
