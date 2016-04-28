@@ -5,7 +5,7 @@ require 'net/http'
 # deploy to an app
 #
 class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
-  VERSION = "0.13"
+  VERSION = "0.14"
   MAX_UPLOAD_SIZE_MB = 300
   MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB*1024*1024
   STATUS_SUCCESS = "success"
@@ -24,7 +24,7 @@ class Heroku::Command::Deploy < Heroku::Command::BaseWithApp
   # deploy a war file to an app
   #
   # -w, --war WARFILE            # war to deploy
-  # -r, --webapp-runner VERSION  # defaults to 8.0.23.0
+  # -r, --webapp-runner VERSION  # defaults to 8.0.30.2
   # -j, --jdk VERSION            # 7 or 8. defaults to 8
   # -i, --includes FILES         # list of files to include in the slug
   #
