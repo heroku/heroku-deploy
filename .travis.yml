@@ -1,7 +1,7 @@
 env:
   global:
   - HEROKU_TEST_APP_NAME="heroku-deploy-plugin-test"
-  - secure: q5El41DP52L1u5l8Fm+a7sv47q0yZ/48ZoZQ65O66TvDX1BYBc91ErTGaKp3mWmdcd8WZuYX98nwHktmf0KCkuUycKVlyiGxMLoIAEEzox2DIuGtz7q94qsNLkvWE6o2Zh++KCIjPO7+Efz0/7EF3u7Sk8nB2BjurDZGa/+NKv0=
+  - secure: uyRgw/EQK3SE/9TxEM+K0zh+MC+iLXcOop7zqDbbbMn3FBIABybs6zGpi5sb9Sa8iCbtCXsRgojJFkcvXgs0PLkDPJPngucVhw8eh/++0XPa6Y9HvcXuEy5WwaoWGetVJdcQcaM32c0RAm5q7XbqloBZqOQuaOhCl9NzDb/MtMY=
 language: ruby
 rvm:
 - 2.2.3
